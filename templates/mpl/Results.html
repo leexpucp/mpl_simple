@@ -1,0 +1,120 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load i18n %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** STYLES *** #}
+{# ****************************************************************************************************************** #}
+{% block styles %}
+    <link href="{% static 'mpl/css/custom.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+    {% trans "Results" %}
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** CONTENT *** #}
+{# ****************************************************************************************************************** #}
+{% block content %}
+
+    <div class="wrapper">
+
+        <div class="card info">
+            {% blocktrans trimmed %}
+                The following decision was randomly chosen for your payment:
+            {% endblocktrans %}
+        </div>
+        <br/>
+
+
+
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <!-- Choice To Pay: Choice List -->
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+
+            <div class="card">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="header">
+
+                            <th class="lottery-a">{% trans "Option A" %}</th>
+                            <th class="formfield"></th>
+                            <th class="lottery-b">{% trans "Option B" %}</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for i,f,p in choice_to_pay %}
+                            <tr>
+
+
+                                <!-- A lotteries -->
+                                <td class="lottery-a">
+                                    {{ lottery_a_hi }} {% trans "with a probability of " %}{{ p }},<br/>
+                                    {{ lottery_a_lo }} {% trans "otherwise" %}
+                                </td>
+
+                                <!-- radio select form fields -->
+                                <td class="formfield">
+                                    {% if option_to_pay == 'A' %}
+                                        <div class="controls">
+                                            <input type="radio" style="pointer-events: none;" checked="checked">
+                                            <input type="radio" style="pointer-events: none;">
+                                        </div>
+                                    {% elif option_to_pay == 'B' %}
+                                        <div class="controls">
+                                            <input type="radio" style="pointer-events: none;">
+                                            <input type="radio" style="pointer-events: none;" checked="checked">
+                                        </div>
+                                    {% endif %}
+                                </td>
+
+                                <!-- B lotteries -->
+                                <td class="lottery-b">
+                                    {{ lottery_b_hi }} {% trans "with a probability of " %}{{ p }},<br/>
+                                    {{ lottery_b_lo }} {% trans "otherwise" %}
+                                </td>
+
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        <br/>
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <!-- payoff information -->
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <div class="card info">
+            <p>
+                {% blocktrans trimmed with option_to_pay=option_to_pay %}
+                    As indicated above, you decided to opt for option {{ option_to_pay }} in this decision.
+                    For the chosen option, one of the two possible outcomes has been randomly realized based
+                    on the corresponding probabilities.
+                {% endblocktrans %}
+            </p>
+            <p>
+                {% blocktrans trimmed with payoff=payoff %}
+                    Your payoff in this task equals <b>{{ payoff }}</b>.
+                {% endblocktrans %}
+            </p>
+        </div>
+
+    </div>
+
+    {% next_button %}
+
+{% endblock %}

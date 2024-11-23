@@ -1,0 +1,84 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+{% load i18n %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** STYLES *** #}
+{# ****************************************************************************************************************** #}
+{% block styles %}
+    <link href="{% static 'mpl/css/custom.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+
+
+
+
+{# ****************************************************************************************************************** #}
+{# *** TITLE *** #}
+{# ****************************************************************************************************************** #}
+{% block title %}
+    {% trans "Your Decision" %}
+{% endblock %}
+
+
+{# ****************************************************************************************************************** #}
+{# *** CONTENT *** #}
+{# ****************************************************************************************************************** #}
+{% block content %}
+
+    <div class="wrapper">
+
+
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+        <!-- Lottery Decisions: Choice List -->
+        <!-- ------------------------------------------------------------------------------------------------------- -->
+
+            <div class="card">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="header">
+
+                            <th class="lottery-a">{% trans "Option A" %}</th>
+                            <th class="formfield"></th>
+                            <th class="lottery-b">{% trans "Option B" %}</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for i, f, p in choices %}
+                            <tr>
+
+
+                                <!-- A lotteries -->
+                                <td class="lottery-a">
+                                    {{ lottery_a_hi }} {% trans "with a probability of " %}{{ p }},<br/>
+                                    {{ lottery_a_lo }} {% trans "otherwise" %}
+                                </td>
+
+                                <!-- radio select form fields -->
+                                <td class="formfield">
+                                    <input type="radio" name="{{ f }}" value="A" required>
+                                    <input type="radio" name="{{ f }}" value="B" required>
+                                </td>
+
+                                <!-- B lotteries -->
+                                <td class="lottery-b">
+                                    {{ lottery_b_hi }} {% trans "with a probability of " %}{{ p }},<br/>
+                                    {{ lottery_b_lo }} {% trans "otherwise" %}
+                                </td>
+
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        {% next_button %}
+
+
+
+{% endblock %}
